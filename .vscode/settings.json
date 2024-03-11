@@ -7,6 +7,7 @@
         "${3rd}/love2d/library"
     ],
     "Lua.diagnostics.disable": [
-        "missing-parameter"
+        "missing-parameter",
+        "undefined-doc-name"
     ]
 }
