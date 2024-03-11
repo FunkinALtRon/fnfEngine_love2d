@@ -2,10 +2,10 @@ local sparrow = {}
 
 ---gets quads from a sparrow format
 ---@param filepath string
----@return animations table
-function sparrow:getSparrow(filepath)
+---@param image love.Image
+---@return table animations
+function sparrow:getSparrow(filepath, image)
     local xml = love.filesystem.newFile(filepath .. ".xml")
-    local img = love.graphics.newImage(filepath .. ".png")
 
     local xmlTable = {}
     local animations = {}
@@ -67,7 +67,7 @@ function sparrow:getSparrow(filepath)
         print(animation, data)
         animations[animation] = {}
         for frame, frames in pairs(data) do
-            animations[animation][frame] = love.graphics.newQuad(frames["x"], frames["y"], frames["width"], frames["height"], img:getWidth(), img:getHeight())
+            animations[animation][frame] = love.graphics.newQuad(frames["x"], frames["y"], frames["width"], frames["height"], image:getWidth(), image:getHeight())
             -- for var, value in pairs(frames) do
             --     print(var, value)
             -- end
@@ -75,7 +75,6 @@ function sparrow:getSparrow(filepath)
     end
 
     xml:release()
-    img:release()
     return animations
 end
 
