@@ -24,7 +24,7 @@ function sparrow:getSparrow(filepath, image)
                     if information:match('%b""') then
                         info = tonumber(information:gsub('"', "")) or information:gsub('"', "")
                     else
-                        if information:match('true') or information:match('false') then
+                        if information:match('true') then
                             if information:match('true') then
                                 info = true
                             else
@@ -53,11 +53,18 @@ function sparrow:getSparrow(filepath, image)
                             frameY = 0,
                             frameHeight = 0,
                             frameWidth = 0,
-                            Rrotated = false,
+                            rotated = 0,
                         }
                 else
-
-                    xmlTable[name][frame][dataTable[1]] = dataTable[2]
+                    if dataTable[1] == "rotated" then
+                        if dataTable[2] then
+                            xmlTable[name][frame][dataTable[1]] = math.rad(-90)
+                        else
+                            xmlTable[name][frame][dataTable[1]] = 0
+                        end
+                    else
+                        xmlTable[name][frame][dataTable[1]] = dataTable[2]
+                    end
                 end
             end
 
@@ -69,10 +76,10 @@ function sparrow:getSparrow(filepath, image)
             animations[animation][frame] = {
                 quad = love.graphics.newQuad(frames["x"], frames["y"], frames["width"], frames["height"], image:getWidth(), image:getHeight()),
                 frameX =  frames["frameX"],
-                frameY = frames["frameY"],
+                frameY = frames["frameY"] - (((frames["rotated"] / math.rad(-90)) * (frames["height"] / 2))),
                 frameWidth = frames["frameWidth"],
                 frameHeight = frames["frameHeight"],
-                Rrotated = frames["Rrotated"],
+                rotated = frames["rotated"],
             }
             -- for var, value in pairs(frames) do
             --     print(var, value)
