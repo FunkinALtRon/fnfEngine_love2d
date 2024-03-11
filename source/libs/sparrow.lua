@@ -36,7 +36,7 @@ function sparrow:getSparrow(filepath, image)
                     end
                     table.insert(dataTable, info)
                 end
-                
+                -- need to replace this with animation and not xmltable because this feels useless
                 if dataTable[1] == "name" then
                     name = dataTable[2]:sub(0, #dataTable[2] - 4)
                     if xmlTable[name] == nil then
@@ -64,16 +64,23 @@ function sparrow:getSparrow(filepath, image)
         end
     end
     for animation, data in pairs(xmlTable) do
-        print(animation, data)
         animations[animation] = {}
         for frame, frames in pairs(data) do
-            animations[animation][frame] = love.graphics.newQuad(frames["x"], frames["y"], frames["width"], frames["height"], image:getWidth(), image:getHeight())
+            animations[animation][frame] = {
+                quad = love.graphics.newQuad(frames["x"], frames["y"], frames["width"], frames["height"], image:getWidth(), image:getHeight()),
+                frameX =  frames["frameX"],
+                frameY = frames["frameY"],
+                frameWidth = frames["frameWidth"],
+                frameHeight = frames["frameHeight"],
+                Rrotated = frames["Rrotated"],
+            }
             -- for var, value in pairs(frames) do
             --     print(var, value)
             -- end
         end
     end
 
+    xmlTable = nil
     xml:release()
     return animations
 end
