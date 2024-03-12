@@ -1,11 +1,25 @@
 local sparrow = {}
 
+local function pivotY(x, frames)
+    if x ~= 0 then
+        return frames["frameHeight"] / (frames["pivotY"])
+    end
+    return 0
+end
+
+local function pivotX(x, frames)
+    if x ~= 0 then
+        return frames["frameWidth"] / (frames["pivotX"])
+    end
+    return 0
+end
+
 ---gets quads from a sparrow format
 ---@param filepath string
 ---@param image love.Image
 ---@return table animations
 function sparrow:getSparrow(filepath, image)
-    local xml = love.filesystem.newFile(filepath .. ".xml")
+    local xml = love.filesystem.newFile(filepath)
 
     local xmlTable = {}
     local animations = {}
@@ -39,6 +53,7 @@ function sparrow:getSparrow(filepath, image)
                 -- need to replace this with animation and not xmltable because this feels useless
                 if dataTable[1] == "name" then
                     name = dataTable[2]:sub(0, #dataTable[2] - 4)
+                    print(name)
                     if xmlTable[name] == nil then
                         xmlTable[name] = {}
                     end
@@ -53,7 +68,9 @@ function sparrow:getSparrow(filepath, image)
                             frameY = 0,
                             frameHeight = 0,
                             frameWidth = 0,
-                            rotated = 0,
+                            pivotX = 0,
+                            pivotY = 0,
+                            rotated = 0
                         }
                 else
                     if dataTable[1] == "rotated" then
@@ -79,6 +96,8 @@ function sparrow:getSparrow(filepath, image)
                 frameY = frames["frameY"] - (((frames["rotated"] / math.rad(-90)) * (frames["height"] / 2))),
                 frameWidth = frames["frameWidth"],
                 frameHeight = frames["frameHeight"],
+                pivotX = pivotX(frames["pivotX"], frames),
+                pivotY = pivotX(frames["pivotY"], frames),
                 rotated = frames["rotated"],
             }
             -- for var, value in pairs(frames) do

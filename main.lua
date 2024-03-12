@@ -1,10 +1,21 @@
-local sparrow = require("source.libs.sparrow")
+Characters = require("source.objects.characters")
 
-local img = love.graphics.newImage("assets/images/p2sonic.png")
-local animations = sparrow:getSparrow("assets/images/p2sonic", img)
-local frame = "0003"
-local anim = "Idle"
+local startTimer = 0
+Timer = 0
+
+local BF = Characters:load("exe-gf", 0, 0, 0)
+
+function love.load()
+    startTimer = love.timer.getTime()
+    
+    BF:PlayAnim("gf dance")
+end
+
+function love.update(dt)
+    Timer = (love.timer.getTime() - startTimer)
+    BF:update(dt)
+end
 
 function love.draw()
-    love.graphics.draw(img, animations[anim][frame]["quad"], (love.graphics.getWidth() / 2) - animations[anim][frame]["frameX"], (love.graphics.getHeight() / 2) - animations[anim][frame]["frameY"], animations[anim][frame]["rotated"], 0.5, 0.5)
+    BF:draw()
 end
