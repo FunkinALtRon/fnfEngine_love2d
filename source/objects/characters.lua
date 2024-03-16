@@ -21,7 +21,6 @@ local function updateframes(time, lastFrame, frames)
             table.insert(newframe, newTime)
         end
     end
-    print(table.concat(newframe, ""), time)
     if not frames[table.concat(newframe, "")] then
         return lastFrame
     end
@@ -47,7 +46,7 @@ function characters:load(JsonPath, x, y, angle)
     characters.character["image"] = img
     characters.character["CurFrame"] = "0000"
     characters.character["CurAnimation"] = "idle"
-    characters.character["CurAnim"] = ""
+    characters.character["CurOffsets"] = {}
     characters.character["startTimer"] = Timer
 
     for Animations, data in pairs(characterJson["animations"]) do
@@ -66,13 +65,14 @@ end
 
 function characters.character:PlayAnim(AnimName)
     self.CurAnimation = characters.character["animations"][AnimName]["name"]
+    self.CurOffsets = characters.character["animations"][AnimName]["offsets"]
     self.CurFrame = "0000"
     self.startTimer = Timer
 end
 
 function characters.character:draw()
     
-    love.graphics.draw(self.image, self.animationsXML[self.CurAnimation][self.CurFrame]["quad"], -self.animationsXML[self.CurAnimation][self.CurFrame]["frameX"], -self.animationsXML[self.CurAnimation][self.CurFrame]["frameY"], 0, 1, 1, 0, 0)
+    love.graphics.draw(self.image, self.animationsXML[self.CurAnimation][self.CurFrame]["quad"], -self.CurOffsets[1] - self.animationsXML[self.CurAnimation][self.CurFrame]["frameX"], -self.CurOffsets[2] - self.animationsXML[self.CurAnimation][self.CurFrame]["frameY"], 0, 1, 1, 0, 0)
 end
 
 return characters
