@@ -4,8 +4,6 @@ characters.character = {}
 local sparrow = require("source.libs.sparrow")
 local Json = require("source.libs.json")
 
-local anim = "gf dance"
-
 ---comment
 ---@param time integer
 ---@param lastFrame string
@@ -44,29 +42,37 @@ function characters:load(JsonPath, x, y, angle)
     characters.character["x"] = x or 0
     characters.character["y"] = y or 0
     characters.character["angle"] = angle or 0
-    characters.character["animations"] = nil
+    characters.character["animations"] = {}
     characters.character["animationsXML"] = sparrow:getSparrow("assets/images/" .. characterJson.image .. ".xml", img)
     characters.character["image"] = img
     characters.character["CurFrame"] = "0000"
-    characters.character["CurAnimation"] = "gf dance0000"
+    characters.character["CurAnimation"] = "idle"
+    characters.character["CurAnim"] = ""
     characters.character["startTimer"] = Timer
+
+    for Animations, data in pairs(characterJson["animations"]) do
+        characters.character["animations"][data["anim"]] = {
+            offsets = data["offsets"],
+            name = data["name"]
+        }
+    end
 
     return characters.character
 end
 
 function characters.character:update(dt)
-    print(self.animationsXML[anim])
-    self.CurFrame = updateframes(math.floor((Timer - self.startTimer) * 24), self.CurFrame, self.animationsXML[anim])
+    self.CurFrame = updateframes(math.floor((Timer - self.startTimer) * 24), self.CurFrame, self.animationsXML[self.CurAnimation])
 end
 
 function characters.character:PlayAnim(AnimName)
-    anim = AnimName
+    self.CurAnimation = characters.character["animations"][AnimName]["name"]
     self.CurFrame = "0000"
     self.startTimer = Timer
 end
 
 function characters.character:draw()
-    love.graphics.draw(self.image, self.animationsXML[anim][self.CurFrame]["quad"], -self.animationsXML[anim][self.CurFrame]["frameX"], self.animationsXML[anim][self.CurFrame]["frameY"], self.animationsXML[anim][self.CurFrame]["rotated"], 0.5, 0.5, 0, 0)
+    
+    love.graphics.draw(self.image, self.animationsXML[self.CurAnimation][self.CurFrame]["quad"], -self.animationsXML[self.CurAnimation][self.CurFrame]["frameX"], -self.animationsXML[self.CurAnimation][self.CurFrame]["frameY"], 0, 1, 1, 0, 0)
 end
 
 return characters

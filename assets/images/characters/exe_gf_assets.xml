@@ -2,7 +2,7 @@
 <TextureAtlas imagePath="exe_gf_assets.png">
 	<!-- Created with Adobe Animate version 21.0.9.42677 -->
 	<!-- http://www.adobe.com/products/animate.html -->
-	<SubTexture name="gfdance0000" x="0" y="0" width="348" height="583" frameX="-3" frameY="0" frameWidth="366" frameHeight="583"/>
+	<SubTexture name="gf dance0000" x="0" y="0" width="348" height="583" frameX="-3" frameY="0" frameWidth="366" frameHeight="583"/>
 	<SubTexture name="gf dance0001" x="0" y="0" width="348" height="583" frameX="-3" frameY="0" frameWidth="366" frameHeight="583"/>
 	<SubTexture name="gf dance0002" x="348" y="0" width="350" height="583" frameX="-2" frameY="0" frameWidth="366" frameHeight="583"/>
 	<SubTexture name="gf dance0003" x="348" y="0" width="350" height="583" frameX="-2" frameY="0" frameWidth="366" frameHeight="583"/>
