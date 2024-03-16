@@ -48,6 +48,7 @@ function characters:load(JsonPath, x, y, angle)
     characters.character["CurAnimation"] = "idle"
     characters.character["CurOffsets"] = {}
     characters.character["startTimer"] = Timer
+    characters.character["bop"] = true
 
     for Animations, data in pairs(characterJson["animations"]) do
         characters.character["animations"][data["anim"]] = {
@@ -57,6 +58,15 @@ function characters:load(JsonPath, x, y, angle)
     end
 
     return characters.character
+end
+
+
+function characters.character:dance()
+    if self.bop then
+        self:PlayAnim("idle")
+    else
+        self.bop = true
+    end
 end
 
 function characters.character:update(dt)
